@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --night: #05070c;
+  --fg: #e9eef5;
+  --mut: #6c7a8a;
+  --hair: #1a2230;
+  --ice: #9be8ff;
+}
+
+html {
+  background: var(--night);
+  scrollbar-color: var(--hair) var(--night);
+}
+
+body {
+  @apply bg-night text-fg font-sans text-base leading-[1.65] antialiased;
+  overscroll-behavior: none;
+}
+
+::selection {
+  background: rgba(155, 232, 255, 0.22);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ice);
+  outline-offset: 2px;
+}
+
+/* labels — Newsreader small caps, never monospace, never uppercase */
+.label {
+  font-family: 'Newsreader', Georgia, serif;
+  font-variant-caps: small-caps;
+  font-synthesis: small-caps;
+  letter-spacing: 0.14em;
+  font-size: 13px;
+  color: var(--mut);
+}
+
+/* display — Newsreader italic, light, optical sizing on */
+.display {
+  font-family: 'Newsreader', Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+  font-optical-sizing: auto;
+  line-height: 1.04;
+}
+
+.display em {
+  font-style: italic;
+  font-weight: 430;
+}
+
+/* preloader wordmark — a soft blur-in on load */
+@keyframes preloader-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(10px);
+    letter-spacing: 0.2em;
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+    letter-spacing: normal;
+  }
+}
+.preloader-mark {
+  animation: preloader-in 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* dock morph dot */
+@keyframes dot-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+.dot-pulse {
+  animation: dot-pulse 0.9s ease-in-out infinite;
+}
+
+/* scroll hint — three dots drifting downward */
+@keyframes hint-drift {
+  0% {
+    transform: translateY(-7px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(9px);
+    opacity: 0;
+  }
+}
+.hint-dot {
+  @apply h-1 w-1 rounded-full bg-mut;
+  animation: hint-drift 1.8s ease-in-out infinite;
+}
+
+/* footer link underline draws in ice */
+.line-link {
+  position: relative;
+}
+.line-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: var(--ice);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.line-link:hover::after,
+.line-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot-pulse,
+  .hint-dot,
+  .preloader-mark {
+    animation: none;
+  }
+}
